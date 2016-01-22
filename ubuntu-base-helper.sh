@@ -20,6 +20,7 @@ echo "walle" > /etc/hostname
 apt-get -y install sudo dosfstools ntfs-3g
 apt-get -y install isc-dhcp-client net-tools iputils-arping iputils-ping openssh-server
 apt-get -y install wireless-tools wpasupplicant
+apt-get -y install vim strace file wget less
 apt-get clean
 
 # sudo without password
