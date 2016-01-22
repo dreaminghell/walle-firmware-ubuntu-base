@@ -13,12 +13,8 @@ echo "walle:walle" | chpasswd
 adduser walle sudo
 
 # change hostname
-sed 's/cmy-ThinkPad-T430/walle/g' /etc/hosts > /tmp/__hosts
-mv /tmp/__hosts /etc/hosts
-chmod 0644 /etc/hosts
-sed 's/cmy-ThinkPad-T430/walle/g' /etc/hostname > /tmp/__hostname
-mv /tmp/__hostname /etc/hostname
-chmod 0644 /etc/hostname
+sed -i '/127.0.1.1/s/^.*$/127.0.1.1       walle/' /etc/hosts
+echo "walle" > /etc/hostname
 
 # Install deb
 apt-get -y install sudo dosfstools ntfs-3g
@@ -27,17 +23,12 @@ apt-get -y install wireless-tools wpasupplicant
 apt-get clean
 
 # sudo without password
-sed 's/%sudo\tALL=(ALL:ALL) ALL/%sudo\tALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers > /tmp/__sudoers
-mv /tmp/__sudoers /etc/sudoers
-chmod 0440 /etc/sudoers
+sed -i 's/%sudo\tALL=(ALL:ALL) ALL/%sudo\tALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
 
 # do something in booting
-sed 's/exit 0//g' /etc/rc.local > /tmp/__rc.local
-echo "/usr/local/bin/mtd-by-name.sh" >> /tmp/__rc.local
-echo "/usr/local/bin/first-boot-recovery.sh" >> /tmp/__rc.local
-echo "exit 0" >> /tmp/__rc.local
-mv /tmp/__rc.local /etc/rc.local
-chmod 0755 /etc/rc.local
+sed -i 's/exit 0//g' /etc/rc.local
+echo "/usr/local/bin/mtd-by-name.sh" >> /etc/rc.local
+echo "/usr/local/bin/first-boot-recovery.sh" >> /etc/rc.local
 
 # autoconfig network
 echo "auto lo" >> /etc/network/interfaces
@@ -56,6 +47,4 @@ echo "pre-up wpa_supplicant -iwlan0 -c/etc/wpa_supplicant.conf -s -B" >> /etc/ne
 echo "post-down pkill wpa_supplicant" >> /etc/network/interfaces
 
 # don't wait network in system booting.
-sed 's/sleep/#sleep/g' /etc/init/failsafe.conf > /tmp/__failsafe.conf
-mv /tmp/__failsafe.conf /etc/init/failsafe.conf
-chmod 0644 /etc/init/failsafe.conf
+sed -i 's/sleep/#sleep/g' /etc/init/failsafe.conf
