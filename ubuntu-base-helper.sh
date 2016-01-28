@@ -31,8 +31,6 @@ sed -i 's/%sudo\tALL=(ALL:ALL) ALL/%sudo\tALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/su
 sed -i 's/exit 0//g' /etc/rc.local
 echo "/usr/local/bin/mtd-by-name.sh" >> /etc/rc.local
 echo "/usr/local/bin/first-boot-recovery.sh" >> /etc/rc.local
-echo "insmod /lib/modules/brcmutil.ko" >> /etc/rc.local
-echo "insmod /lib/modules/brcmfmac.ko" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 # autoconfig network
@@ -53,3 +51,6 @@ echo "post-down pkill wpa_supplicant" >> /etc/network/interfaces
 
 # don't wait network in system booting.
 sed -i 's/sleep/#sleep/g' /etc/init/failsafe.conf
+
+# use libmali for glmark2 with gbm
+ln -sf libmali.gbm.so /usr/lib/libmali.so
