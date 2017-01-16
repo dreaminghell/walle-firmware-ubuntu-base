@@ -5,7 +5,9 @@
 
 rm -rf /dev/block/mtd/by-name/
 mkdir -p /dev/block/mtd/by-name
-if [ -d /sys/class/mtd/ ]; then
+#if [ -d /sys/class/mtd/ ]; then
+f_count=`ls /sys/class/mtd/ | wc -l`
+if [ $f_count -gt 0 ]; then
     # nand
     for i in `ls /sys/class/mtd/mtd[0-9]*/name`; do
 	    name=`cat ${i}`
